@@ -125,7 +125,7 @@ export interface ICoord {
 
 //my interfaces
 
- export interface ICityWeatherData {
+export interface ICityWeatherData {
     cityName: string,
     weatherData: IList[] | undefined
 }

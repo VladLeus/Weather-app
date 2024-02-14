@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../hooks/redux";
-import { useLazyGetCityWeatherQuery } from "../store/openWeather/openWeather.api";
+import React, {useEffect, useState} from "react";
+import {useAppSelector} from "../hooks/redux";
+import {useLazyGetCityWeatherQuery} from "../store/openWeather/openWeather.api";
 import {ICityWeatherData} from "../models/models";
-
-
+import {CityCard} from "./CityCard";
 
 export function CityWeather() {
-    const { favourites } = useAppSelector(state => state.openWeather);
+    const {favourites} = useAppSelector(state => state.openWeather);
     const [cities, setCities] = useState<ICityWeatherData[]>([]);
 
-    const [fetchWeather, { isLoading, isError, data }] = useLazyGetCityWeatherQuery();
+    const [fetchWeather, {isLoading, isError}] = useLazyGetCityWeatherQuery();
 
     useEffect(() => {
         const fetchDataForCities = async () => {
@@ -30,7 +29,7 @@ export function CityWeather() {
         };
 
         fetchDataForCities();
-    }, [favourites]); // Запускаємо ефект, коли favourites змінюється
+    }, [favourites]);
 
     if (favourites.length === 0) {
         return <p className="text-center font-jost font-semibold text-black">No added cities yet.</p>;
@@ -44,14 +43,13 @@ export function CityWeather() {
         return <p className="text-center font-jost font-semibold text-black">Some error occurred!</p>;
     }
 
-    // Тут ви можете використовувати стан cities для відображення даних
     return (
         <>
-            {cities.map(city => (
-                <div key={city.cityName}>
-                    <p>{city.cityName.split(' ')[0] + ', ' + city.cityName.split(' ')[1].toUpperCase()}</p>
-                </div>
-            ))}
+            <div className="grid grid-cols-3 gap-1 mt-[200px] xl:grid-cols-5 place-items-center">
+                {cities.map(city => (
+                    <CityCard key={city.cityName} city={city}/>
+                ))}
+            </div>
         </>
     );
 }

@@ -40,14 +40,14 @@ export function SearchCity() {
             <div className="relative w-[750px]">
                 <div className="flex justify-between w-full">
                     <input
-                    type="text"
-                    className="border py-2 px-4 w-[570px] h-[40px] outline-none
+                        type="text"
+                        className="border py-2 px-4 w-[570px] h-[40px] outline-none
                     mb-2 rounded shadow-shadowEfCol shadow-md
                     font-jost font-light
                     "
-                    placeholder="Search for city..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
+                        placeholder="Search for city..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
                     />
                     <button
                         className="w-[115px] h-[40px] bg-coldStatCol rounded
