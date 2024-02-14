@@ -15,7 +15,7 @@ export const openWeatherSlice = createSlice({
     initialState,
     reducers: {
         addFavourite(state, action: PayloadAction<string>){
-            state.favourites.push(action.payload)
+            state.favourites.unshift(action.payload)
             localStorage.setItem(LS_FAV_KEY, JSON.stringify(state.favourites))
         },
         removeFavourite(state, action: PayloadAction<string>){
