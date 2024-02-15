@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ICityWeatherData} from "../models/models";
 import {Plotting} from "./Plotting";
+import {useActions} from "../hooks/actions";
 
 export function CityCard({city}: { city: ICityWeatherData }) {
     const [isMetricUnits, setIsMetricUnits] = useState(true);
@@ -15,6 +16,13 @@ export function CityCard({city}: { city: ICityWeatherData }) {
     const activeTempClasses: string = 'font-jost font-normal text-black text-[22px] cursor-pointer transition-colors';
     const notActiveTempClasses: string = 'font-jost font-normal text-secTextCol text-[22px] cursor-pointer transition-colors';
 
+    const {removeFavourite} = useActions();
+
+    const removeFromFavourite = (event: React.MouseEvent<HTMLParagraphElement>) => {
+        event.preventDefault()
+        if (city.cityName.length > 0)
+            removeFavourite(city.cityName);
+    }
     const formatDate = (date: Date): string => {
         const days: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         const months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -42,10 +50,10 @@ export function CityCard({city}: { city: ICityWeatherData }) {
             setTemperature(Math.round(cityTemp))
             setFeelsLikeTemp(Math.round(feelsLike))
         }
-    }, [isMetricUnits]);
+    }, [city.weatherData, isMetricUnits]);
 
     const getTempString = (temp: number): string => {
-        if (temp == 0) {
+        if (temp === 0) {
             return temp.toString();
         } else if (temp > 0) {
             return `+${temp}`;
@@ -65,13 +73,21 @@ export function CityCard({city}: { city: ICityWeatherData }) {
                                 alt="ico"
                                 className="w-[50px] h-[50px]"
                             />
-                            <p className="font-jost font-normal text-secTextCol text-[13px] mr-[15px]"
-                            >
-                                {city.weatherData?.[0].weather[0].main}</p>
+                            <div className="flex justify-around w-max items-center">
+                                <p className="font-jost font-normal text-secTextCol text-[13px] mr-[15px]"
+                                >
+                                    {city.weatherData?.[0].weather[0].main}
+                                </p>
+                                <p
+                                    className="font-jost font-normal text-secTextCol hover:text-black cursor-pointer
+                                    pb-6 pr-2"
+                                    onClick={removeFromFavourite}
+                                >&times;</p>
+                            </div>
                         </div>
                     </div>
                     <p className="font-jost font-light text-black text-lg ml-[15px]">{formatDate(new Date())}</p>
-                    <Plotting city={city}/>
+                    <Plotting city={city} chartColor={city.weatherData[0].main.temp <= 0 ? "#5B8CFF" : "#FFA25B"}/>
                     <div className="flex justify-between items-center">
                         <div className="w-[120px] h-[80px] flex flex-col gap-0.5 justify-center items-center">
                             <div className="flex gap-0.5 justify-between ml-[15px]">
