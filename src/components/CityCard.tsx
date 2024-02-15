@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ICityWeatherData} from "../models/models";
+import {Plotting} from "./Plotting";
 
 export function CityCard({city}: { city: ICityWeatherData }) {
     const [isMetricUnits, setIsMetricUnits] = useState(true);
@@ -70,7 +71,7 @@ export function CityCard({city}: { city: ICityWeatherData }) {
                         </div>
                     </div>
                     <p className="font-jost font-light text-black text-lg ml-[15px]">{formatDate(new Date())}</p>
-                    <p className="h-[80px] ml-[15px]">Here will be plotting...</p>
+                    <Plotting city={city}/>
                     <div className="flex justify-between items-center">
                         <div className="w-[120px] h-[80px] flex flex-col gap-0.5 justify-center items-center">
                             <div className="flex gap-0.5 justify-between ml-[15px]">
