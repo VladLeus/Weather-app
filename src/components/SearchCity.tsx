@@ -3,11 +3,13 @@ import {useSearchCityQuery} from "../store/mapBox/mapBox.api";
 import {useDebounce} from "../hooks/debounce";
 import {IFeature} from "../models/models";
 import {useActions} from "../hooks/actions";
+import {useAppSelector} from "../hooks/redux";
 
 export function SearchCity() {
     const [search, setSearch] = useState('');
     const [dropDown, setDropdown] = useState(false)
     const [cityName, setCityName] = useState('');
+    const {favourites} = useAppSelector(state => state.openWeather);
     const debounced: string = useDebounce(search, 500)
     const {isLoading, isError, data} = useSearchCityQuery(debounced, {
         skip: debounced.length < 2
@@ -26,7 +28,7 @@ export function SearchCity() {
     const addToFavourite = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
 
-        if (cityName.length > 0) {
+        if (cityName.length > 0 && !favourites.includes(cityName)) {
             addFavourite(cityName)
             setSearch('');
             setDropdown(false);
