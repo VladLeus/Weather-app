@@ -21,4 +21,4 @@ export const mapBoxApi = createApi({
     })
 })
 
-export const {useSearchCityQuery} = mapBoxApi
+export const {useSearchCityQuery, useLazySearchCityQuery} = mapBoxApi

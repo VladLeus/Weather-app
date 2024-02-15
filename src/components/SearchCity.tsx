@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useSearchCityQuery} from "../store/mapBox/mapBox.api";
+import {useLazySearchCityQuery, useSearchCityQuery} from "../store/mapBox/mapBox.api";
 import {useDebounce} from "../hooks/debounce";
 import {IFeature} from "../models/models";
 import {useActions} from "../hooks/actions";
@@ -9,11 +9,37 @@ export function SearchCity() {
     const [search, setSearch] = useState('');
     const [dropDown, setDropdown] = useState(false)
     const [cityName, setCityName] = useState('');
+    const [currUserPos, setCurrUserPos] = useState('');
     const {favourites} = useAppSelector(state => state.openWeather);
     const debounced: string = useDebounce(search, 500)
     const {isLoading, isError, data} = useSearchCityQuery(debounced, {
         skip: debounced.length < 2
     })
+    const [fetchCity, {isLoading: isCityLoading, isError: isCityError}] = useLazySearchCityQuery();
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(position => {
+            if (position) {
+                setCurrUserPos(`${position.coords.longitude},${position.coords.latitude}`)
+            }
+        })
+    }, []);
+
+    useEffect(() => {
+        if (currUserPos.length) {
+            const fetchCityByCurrUserPos = async () => {
+                const result = await fetchCity(currUserPos);
+                const cityName = result.data?.[0].text
+                    + ' ' + result.data?.[0].context[result.data?.[0].context.length - 1].short_code;
+                console.log(currUserPos);
+                console.log(result.data);
+                if (cityName && !favourites.includes(cityName)) {
+                    addFavourite(cityName);
+                }
+            }
+            fetchCityByCurrUserPos();
+        }
+    }, [currUserPos]);
 
     const {addFavourite} = useActions();
 

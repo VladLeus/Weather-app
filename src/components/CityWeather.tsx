@@ -13,10 +13,8 @@ export function CityWeather() {
     useEffect(() => {
         const fetchDataForCities = async () => {
             const updatedCities: ICityWeatherData[] = [];
-
             for (const city of favourites) {
                 const result = await fetchWeather(city.split(' ')[0]);
-
                 if (!result.error) {
                     updatedCities.push({
                         cityName: city,
@@ -24,7 +22,6 @@ export function CityWeather() {
                     });
                 }
             }
-            console.log(updatedCities)
             setCities(updatedCities);
         };
 
