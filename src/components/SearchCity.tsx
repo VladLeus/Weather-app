@@ -25,7 +25,7 @@ export function SearchCity() {
                 setCurrUserPos(`${position.coords.longitude},${position.coords.latitude}`)
             }
         })
-    });
+    }, []);
 
     useEffect(() => {
         if (currUserPos.length) {
@@ -33,8 +33,6 @@ export function SearchCity() {
                 const result = await fetchCity(currUserPos);
                 const cityName = result.data?.[0].text
                     + ' ' + result.data?.[0].context[result.data?.[0].context.length - 1].short_code;
-                console.log(currUserPos);
-                console.log(result.data);
                 if (cityName && !favourites.includes(cityName)) {
                     addFavourite(cityName);
                 }
