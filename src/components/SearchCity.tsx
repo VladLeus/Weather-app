@@ -4,12 +4,14 @@ import {useDebounce} from "../hooks/debounce";
 import {IFeature} from "../models/models";
 import {useActions} from "../hooks/actions";
 import {useAppSelector} from "../hooks/redux";
+import {useTranslation} from "react-i18next";
 
 export function SearchCity() {
     const [search, setSearch] = useState('');
     const [dropDown, setDropdown] = useState(false)
     const [cityName, setCityName] = useState('');
     const [currUserPos, setCurrUserPos] = useState('');
+    const {t, i18n} = useTranslation();
     const {favourites} = useAppSelector(state => state.openWeather);
     const debounced: string = useDebounce(search, 500)
     const {isLoading, isError, data} = useSearchCityQuery(debounced, {
@@ -73,7 +75,7 @@ export function SearchCity() {
                     mb-2 rounded shadow-shadowEfCol shadow-md
                     font-jost font-light
                     "
-                        placeholder="Search for city..."
+                        placeholder={t('search')}
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
@@ -82,7 +84,7 @@ export function SearchCity() {
                         hover:shadow-md hover:shadow-shadowEfCol transition-all
                         font-jost font-normal text-white"
                         onClick={addToFavourite}
-                    >Add
+                    >{t('add')}
                     </button>
                 </div>
 

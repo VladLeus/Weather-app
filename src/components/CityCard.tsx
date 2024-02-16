@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import {ICityWeatherData} from "../models/models";
 import {Plotting} from "./Plotting";
 import {useActions} from "../hooks/actions";
+import {useTranslation} from "react-i18next";
 
 export function CityCard({city}: { city: ICityWeatherData }) {
     const [isMetricUnits, setIsMetricUnits] = useState(true);
     const [temperature, setTemperature] = useState(0);
     const [feelsLikeTemp, setFeelsLikeTemp] = useState(0);
+    const {t} = useTranslation();
     const warmCardClasses: string
         = 'flex flex-col gap-1 justify-center w-[350px] h-[260px] ' +
         'bg-warmCardBG rounded-[5px] shadow-sm shadow-shadowEfCol';
@@ -24,8 +26,29 @@ export function CityCard({city}: { city: ICityWeatherData }) {
             removeFavourite(city.cityName);
     }
     const formatDate = (date: Date): string => {
-        const days: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const days: string[] = [
+            t('Sun'),
+            t('Mon'),
+            t('Tue'),
+            t('Wed'),
+            t('Thu'),
+            t('Fri'),
+            t('Sat')
+        ];
+        const months: string[] = [
+            t('January'),
+            t('February'),
+            t('March'),
+            t('April'),
+            t('May'),
+            t('June'),
+            t('July'),
+            t('August'),
+            t('September'),
+            t('October'),
+            t('November'),
+            t('December')
+        ];
 
         const day: string = days[date.getDay()];
         const month: string = months[date.getMonth()];
@@ -33,8 +56,13 @@ export function CityCard({city}: { city: ICityWeatherData }) {
         const hour: number = date.getHours();
         const minute: number = date.getMinutes();
 
-        return `${day}, ${dayOfMonth} ${month}, ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-    }
+        const formattedHour: string = hour.toString().padStart(2, '0');
+        const formattedMinute: string = minute.toString().padStart(2, '0');
+
+        return `${day}, ${dayOfMonth} ${month}, ${formattedHour}:${formattedMinute}`;
+    };
+
+    const formattedDate = formatDate(new Date())
 
     const changeUnits = () => {
         setIsMetricUnits(prevState => !prevState);
@@ -86,7 +114,7 @@ export function CityCard({city}: { city: ICityWeatherData }) {
                             </div>
                         </div>
                     </div>
-                    <p className="font-jost font-light text-black text-lg ml-[15px]">{formatDate(new Date())}</p>
+                    <p className="font-jost font-light text-black text-lg ml-[15px]">{formattedDate}</p>
                     <Plotting city={city} chartColor={city.weatherData[0].main.temp <= 0 ? "#5B8CFF" : "#FFA25B"}/>
                     <div className="flex justify-between items-center">
                         <div className="w-[120px] h-[80px] flex flex-col gap-0.5 justify-center items-center">
@@ -110,30 +138,30 @@ export function CityCard({city}: { city: ICityWeatherData }) {
                             </div>
                             <p
                                 className="font-jost font-normal text-secTextCol text-[13px] mb-2"
-                            >Feels like:
-                                {` ${getTempString(feelsLikeTemp)}`} &deg;{isMetricUnits ? 'C' : 'F'}
+                            >
+                                {`${t('feels')} ${getTempString(feelsLikeTemp)}`} &deg;{isMetricUnits ? 'C' : 'F'}
                             </p>
                         </div>
                         <div className="mr-[15px] font-jost font-normal text-black text-[12px]">
-                            <p>Wind: <span
+                            <p>{t('wind')} <span
                                 className={city.weatherData[0].main.temp <= 0
                                     ? "text-coldChart"
                                     : "text-warmChart"}
-                            >{Math.round(city.weatherData[0].wind.speed)} m/s
+                            >{Math.round(city.weatherData[0].wind.speed)} {t('m/s')}
                                     </span>
                             </p>
-                            <p>Humidity: <span
+                            <p>{t('hum')} <span
                                 className={city.weatherData[0].main.temp <= 0
                                     ? "text-coldChart"
                                     : "text-warmChart"}
                             >{city.weatherData[0].main.humidity}%
                                         </span>
                             </p>
-                            <p>Pressure: <span
+                            <p>{t('pres')} <span
                                 className={city.weatherData[0].main.temp <= 0
                                     ? "text-coldChart"
                                     : "text-warmChart"}
-                            >{city.weatherData[0].main.pressure}Pa
+                            >{city.weatherData[0].main.pressure} {t('pa')}
                                         </span>
                             </p>
                         </div>
