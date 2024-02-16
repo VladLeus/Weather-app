@@ -8,7 +8,7 @@ function App() {
     const {t, i18n} = useTranslation();
     useEffect(() => {
         i18n.changeLanguage('en');
-    }, []);
+    });
 
     const changeLanguage = (language: string) => {
         i18n.changeLanguage(language);

@@ -25,7 +25,7 @@ export function SearchCity() {
                 setCurrUserPos(`${position.coords.longitude},${position.coords.latitude}`)
             }
         })
-    }, []);
+    });
 
     useEffect(() => {
         if (currUserPos.length) {
