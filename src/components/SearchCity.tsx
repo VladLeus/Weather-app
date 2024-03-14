@@ -66,10 +66,10 @@ export function SearchCity() {
             {isError && <p className="text-xl font-jost font-normal text-red-600">Something went wrong</p>}
 
             <div className="relative w-[750px]">
-                <div className="flex justify-between w-full">
+                <div className="flex justify-evenly md:justify-between w-full">
                     <input
                         type="text"
-                        className="border py-2 px-4 w-[570px] h-[40px] outline-none
+                        className="border py-2 px-4 w-[270px] md:w-[570px] h-[40px] outline-none
                     mb-2 rounded shadow-shadowEfCol shadow-md
                     font-jost font-light
                     "
@@ -88,7 +88,7 @@ export function SearchCity() {
 
                 {dropDown && <ul
                     className=" list-none absolute top-[42px] left-0 right-0 max-h-[200px]
-                    shadow-shadowEfCol shadow-md bg-white overflow-y-scroll rounded w-[570px]">
+                    shadow-shadowEfCol shadow-md bg-white overflow-y-scroll rounded w-[270px] md:w-[570px]">
                     {isLoading && <p className="text-center font-jost font-light">Loading...</p>}
                     {data?.map((city: IFeature) => (
                         <li

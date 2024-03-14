@@ -42,7 +42,7 @@ export function CityWeather() {
 
     return (
         <>
-            <div className="grid grid-cols-3 gap-1 mt-[200px] xl:grid-cols-5 place-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-y-2.5 mt-[200px] xl:grid-cols-5 place-items-center">
                 {cities.map(city => (
                     <CityCard key={city.cityName} city={city}/>
                 ))}
